@@ -1,17 +1,19 @@
 pragma solidity ^0.8.0;
 
-contract TravelRecords {
+contract TravelLog {
     struct TravelRecord {
         string passportID;
-        string personalInfo;
-        uint256 enterDate;
-        uint256 plannedExitDate;
-        uint256 actualExitDate;
+        uint passportExpirationDate;
+        string fullName;
+        string countryOfResidence;
+        string countryOfOrigin;
+        string destinationCountry;
+        uint entryDate;
+        uint plannedExitDate;
+        uint actualExitDate;
     }
 
-    mapping(string => TravelRecord[]) private travelLogs;
-    mapping(string => bool) private passportIDs;
-
+    mapping (bytes32 => TravelRecord) private travelRecords;
     address private admin;
 
     constructor() {
@@ -19,38 +21,58 @@ contract TravelRecords {
     }
 
     modifier onlyAdmin() {
-        require(msg.sender == admin, "Only admin can perform this operation");
+        require(msg.sender == admin, "Only admin can perform this action");
         _;
     }
 
-    modifier validEnterDate(uint256 _enterDate) {
-        require(_enterDate == block.timestamp, "Enter date must be current timestamp");
-        _;
+    function addTravelRecord(
+        string memory _passportID,
+        uint _passportExpirationDate,
+        string memory _fullName,
+        string memory _countryOfResidence,
+        string memory _countryOfOrigin,
+        string memory _destinationCountry,
+        uint _entryDate,
+        uint _plannedExitDate
+    ) public onlyAdmin {
+        require(_passportExpirationDate > block.timestamp + 180 days, "Passport expiration date must be at least 6 months from entry date");
+        bytes32 recordKey = keccak256(abi.encodePacked(_passportID, _entryDate));
+        require(travelRecords[recordKey].entryDate == 0, "Travel record already exists");
+        travelRecords[recordKey] = TravelRecord(
+            _passportID,
+            _passportExpirationDate,
+            _fullName,
+            _countryOfResidence,
+            _countryOfOrigin,
+            _destinationCountry,
+            _entryDate,
+            _plannedExitDate,
+            0
+        );
     }
 
-    modifier canAddTravelRecord(string memory _passportID) {
-        require(passportIDs[_passportID], "Passport ID does not exist");
-        require(travelLogs[_passportID].length == 0 || travelLogs[_passportID][travelLogs[_passportID].length - 1].actualExitDate != 0, "Cannot add new travel record until previous travel record is exited");
-        _;
+    function updateTravelRecord(string memory _passportID, uint _exitDate) public onlyAdmin {
+        bytes32 recordKey = keccak256(abi.encodePacked(_passportID, block.timestamp));
+        TravelRecord storage record = travelRecords[recordKey];
+        require(record.entryDate != 0, "Travel record does not exist");
+        require(_exitDate == 0 || _exitDate == block.timestamp, "Invalid exit date");
+        record.actualExitDate = _exitDate;
     }
 
-    function addTravelRecord(string calldata _passportID, string calldata _personalInfo, uint256 _enterDate, uint256 _plannedExitDate) external onlyAdmin validEnterDate(_enterDate) canAddTravelRecord(_passportID) {
-        TravelRecord memory newRecord = TravelRecord(_passportID, _personalInfo, _enterDate, _plannedExitDate, 0);
-        travelLogs[_passportID].push(newRecord);
-    }
-
-    function updateTravelRecordExit(string calldata _passportID, uint256 _actualExitDate) external onlyAdmin {
-        require(travelLogs[_passportID].length > 0, "No travel record found for passport ID");
-        require(travelLogs[_passportID][travelLogs[_passportID].length - 1].actualExitDate == 0, "No active travel record found for passport ID");
-        require(_actualExitDate <= block.timestamp, "Actual exit date cannot be in the future");
-        travelLogs[_passportID][travelLogs[_passportID].length - 1].actualExitDate = _actualExitDate;
-    }
-
-    function getTravelRecordsByPassportID(string calldata _passportID) external view returns (TravelRecord[] memory) {
-        return travelLogs[_passportID];
-    }
-
-    function registerPassportID(string calldata _passportID) external onlyAdmin {
-        passportIDs[_passportID] = true;
+    function getTravelRecord(string memory _passportID, uint _entryDate) public view returns (string memory, uint, string memory, string memory, string memory, string memory, uint, uint, uint) {
+        bytes32 recordKey = keccak256(abi.encodePacked(_passportID, _entryDate));
+        TravelRecord storage record = travelRecords[recordKey];
+        require(record.entryDate != 0, "Travel record does not exist");
+        return (
+            record.passportID,
+            record.passportExpirationDate,
+            record.fullName,
+            record.countryOfResidence,
+            record.countryOfOrigin,
+            record.destinationCountry,
+            record.entryDate,
+            record.plannedExitDate,
+            record.actualExitDate
+        );
     }
 }
