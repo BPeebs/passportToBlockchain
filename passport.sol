@@ -1,46 +1,56 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract TravelLog {
+contract TravelRecord {
     
-    struct TravelRecord {
+    struct TravelLog {
         uint enterDate;
         uint exitDate;
         string passportId;
         string personalInfo;
     }
-    
-    mapping(string => TravelRecord) private travelLogs;
-    
+
+    mapping(string => TravelLog[]) private travelLogs;
     address private admin;
     
     constructor() {
         admin = msg.sender;
     }
     
-    modifier onlyAdmin() {
-        require(msg.sender == admin, "Only admin can access this function");
-        _;
+    function addTravelRecord(string memory _passportId, string memory _personalInfo) public {
+        require(msg.sender == admin, "Only the admin can add travel records.");
+        TravelLog[] storage logs = travelLogs[_passportId];
+        uint length = logs.length;
+        if (length > 0) {
+            require(logs[length - 1].exitDate != 0, "The user is still in another country.");
+        }
+        logs.push(TravelLog(block.timestamp, 0, _passportId, _personalInfo));
     }
     
-    function addTravelRecord(string memory _passportId, string memory _personalInfo, uint _enterDate, uint _exitDate) public onlyAdmin {
-        require(travelLogs[_passportId].enterDate == 0, "User is already in a country");
-        require(_enterDate <= _exitDate, "Enter date should be less than or equal to exit date");
-        
-        TravelRecord memory newRecord = TravelRecord(_enterDate, _exitDate, _passportId, _personalInfo);
-        travelLogs[_passportId] = newRecord;
+    function updateTravelRecordExit(string memory _passportId) public {
+        require(msg.sender == admin, "Only the admin can update travel records.");
+        TravelLog[] storage logs = travelLogs[_passportId];
+        uint length = logs.length;
+        require(length > 0 && logs[length - 1].exitDate == 0, "No travel record to update or user already exited.");
+        logs[length - 1].exitDate = block.timestamp;
     }
     
-    function getTravelRecord(string memory _passportId) public view returns (uint enterDate, uint exitDate, string memory passportId, string memory personalInfo) {
-        require(travelLogs[_passportId].enterDate != 0, "No travel record found for this passport ID");
-        
-        enterDate = travelLogs[_passportId].enterDate;
-        exitDate = travelLogs[_passportId].exitDate;
-        passportId = travelLogs[_passportId].passportId;
-        personalInfo = travelLogs[_passportId].personalInfo;
+    function getTravelRecord(string memory _passportId) public view returns (uint, uint, string memory, string memory) {
+        TravelLog[] storage logs = travelLogs[_passportId];
+        uint length = logs.length;
+        require(length > 0, "No travel records found for the given passport ID.");
+        TravelLog storage latestLog = logs[length - 1];
+        return (latestLog.enterDate, latestLog.exitDate, latestLog.passportId, latestLog.personalInfo);
     }
-    
-    function canEnter(string memory _passportId) public view returns (bool) {
-        return travelLogs[_passportId].exitDate != 0;
+
+    function getTravelRecordByDate(string memory _passportId, uint _enterDate) public view returns (uint, uint, string memory, string memory) {
+        TravelLog[] storage logs = travelLogs[_passportId];
+        uint length = logs.length;
+        require(length > 0, "No travel records found for the given passport ID.");
+        for (uint i = 0; i < length; i++) {
+            if (logs[i].enterDate == _enterDate) {
+                return (logs[i].enterDate, logs[i].exitDate, logs[i].passportId, logs[i].personalInfo);
+            }
+        }
+        revert("No travel record found for the given entry date.");
     }
 }
