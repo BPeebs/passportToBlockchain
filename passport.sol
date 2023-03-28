@@ -12,7 +12,6 @@ contract TravelLog {
         uint plannedExitDate;
         uint actualExitDate;
     }
-
     mapping (bytes32 => TravelRecord) private travelRecords;
     address private admin;
 
