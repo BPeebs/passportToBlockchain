@@ -1,9 +1,13 @@
 #This GUI works for the passport.sol smart contract
 
-
-
+from pathlib import Path
+import json
 import tkinter as tk
 from web3 import Web3
+from dateutil.parser import parse
+from dateutil import tz
+import datetime
+
 
 root = tk.Tk()
 
@@ -13,145 +17,9 @@ class TravelLogGUI:
     def __init__(self, master):
         self.master = master
         master.title("TravelLog GUI")
-        self.abi = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_passportID",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_passportExpirationDate",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_fullName",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_countryOfResidence",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_countryOfOrigin",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_destinationCountry",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_entryDate",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_plannedExitDate",
-				"type": "uint256"
-			}
-		],
-		"name": "addTravelRecord",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_passportID",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_exitDate",
-				"type": "uint256"
-			}
-		],
-		"name": "updateTravelRecord",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_passportID",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_entryDate",
-				"type": "uint256"
-			}
-		],
-		"name": "getTravelRecord",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
-        #The above abi is very long, and its copied from the remix deployment page verbatum, so keep it collapsed for a cleaner view
-        self.contract_address = "0x2f49fD4676F032147aEF73C188759d2c8Af36a24"
+        with open(Path(r'C:\Users\ajcth\Documents\GitHub\Passport_To_Blockchain\passport_abi.json')) as f:
+            self.abi = json.load(f)
+        self.contract_address = "0x8EFa01ec71854925decD2d690422F4bCBE0BC5Ef"
         self.network = "HTTP://127.0.0.1:7545"
         self.web3 = Web3(Web3.HTTPProvider(self.network))
         self.contract = self.web3.eth.contract(address=self.contract_address, abi=self.abi)
@@ -170,7 +38,6 @@ class TravelLogGUI:
         ]
         self.update_travel_record_fields = [
             ("Passport ID", str),
-            ("Exit Date (Unix timestamp)", int)
         ]
         self.get_travel_record_fields = [
             ("Passport ID", str),
@@ -231,17 +98,20 @@ class TravelLogGUI:
             if datatype == str:
                 values.append(value)
             elif datatype == int:
-                values.append(int(value))
+                # Convert date string to datetime object and then to Unix timestamp
+                dt = parse(value)
+                dt = dt.astimezone(tz.UTC)
+                values.append(int(dt.timestamp()))
+
         # Call the addTravelRecord function from the smart contract with the values as arguments
         tx_hash = self.contract.functions.addTravelRecord(*values).transact({'from': '0x332F6a1F6691503855D59DB8A5fAc61789Bc99BD'})
+
         # Wait for the transaction to be mined
         self.web3.eth.waitForTransactionReceipt(tx_hash)
 
         # Clear the input fields
-        #for entry in self.add_travel_record_entries:
-        #    entry.delete(0, tk.END)   
-        # NOT WORKING, NEED TO FIX 
-        #          
+        for entry in self.add_travel_record_entries:
+            entry[0].delete(0, tk.END)
     def update_travel_record(self):
         # Get the values from the input fields
         values = []
@@ -257,7 +127,7 @@ class TravelLogGUI:
         self.web3.eth.waitForTransactionReceipt(tx_hash)
         # Clear the input fields
         for entry in self.update_travel_record_entries:
-            entry.delete(0, tk.END)
+            entry[0].delete(0, tk.END)
 
     def get_travel_record(self):
         # Get the values from the input fields
@@ -267,14 +137,24 @@ class TravelLogGUI:
             if datatype == str:
                 values.append(value)
             elif datatype == int:
-                values.append(int(value))
-        # Call the updateTravelRecord function from the smart contract with the values as arguments
-        tx_hash = self.contract.functions.getTravelRecord(*values).transact({'from': '0x332F6a1F6691503855D59DB8A5fAc61789Bc99BD'})
-        # Wait for the transaction to be mined
-        self.web3.eth.waitForTransactionReceipt(tx_hash)
-        # Clear the input fields
-        for entry in self.get_travel_record_entries:
-            entry.delete(0, tk.END)
+                # Convert date string to datetime object and then to Unix timestamp
+                dt = parse(value)
+                dt = dt.astimezone(tz.UTC)
+                values.append(int(dt.timestamp()))
+
+        # Call the getTravelRecord function from the smart contract with the values as arguments
+        result = self.contract.functions.getTravelRecord(*values).call()
+
+        # Format the output and display it in the output_text box
+        self.output_text.delete(1.0, tk.END)
+        self.output_text.insert(tk.END, f"Passport ID: {result[0]}\n")
+        self.output_text.insert(tk.END, f"Passport Expiration Date: {datetime.datetime.utcfromtimestamp(result[1]).strftime('%Y-%m-%d %H:%M:%S')}\n")
+        self.output_text.insert(tk.END, f"Full Name: {result[2]}\n")
+        self.output_text.insert(tk.END, f"Country of Residence: {result[3]}\n")
+        self.output_text.insert(tk.END, f"Country of Origin: {result[4]}\n")
+        self.output_text.insert(tk.END, f"Destination Country: {result[5]}\n")
+        self.output_text.insert(tk.END, f"Entry Date: {datetime.datetime.utcfromtimestamp(result[6]).strftime('%Y-%m-%d %H:%M:%S')}\n")
+        self.output_text.insert(tk.END, f"Planned Exit Date: {datetime.datetime.utcfromtimestamp(result[7]).strftime('%Y-%m-%d %H:%M:%S')}\n")
 
 travel_log_gui = TravelLogGUI(root)
 root.mainloop()
