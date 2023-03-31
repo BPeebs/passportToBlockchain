@@ -12,7 +12,9 @@ contract TravelLog {
         uint plannedExitDate;
         uint actualExitDate;
     }
+
     mapping (bytes32 => TravelRecord) private travelRecords;
+    mapping (string => bool) private passportExists;
     address private admin;
 
     constructor() {
@@ -34,9 +36,9 @@ contract TravelLog {
         uint _entryDate,
         uint _plannedExitDate
     ) public onlyAdmin {
+        bytes32 recordKey = keccak256(abi.encodePacked(_passportID));
+        require(!passportExists[_passportID], "Travel record already exists");
         require(_passportExpirationDate > block.timestamp + 180 days, "Passport expiration date must be at least 6 months from entry date");
-        bytes32 recordKey = keccak256(abi.encodePacked(_passportID, _entryDate));
-        require(travelRecords[recordKey].entryDate == 0, "Travel record already exists");
         travelRecords[recordKey] = TravelRecord(
             _passportID,
             _passportExpirationDate,
@@ -48,20 +50,23 @@ contract TravelLog {
             _plannedExitDate,
             0
         );
+        passportExists[_passportID] = true;
     }
 
-    function updateTravelRecord(string memory _passportID, uint _exitDate) public onlyAdmin {
-        bytes32 recordKey = keccak256(abi.encodePacked(_passportID, block.timestamp));
+    function updateTravelRecord(string memory _passportID) public onlyAdmin {
+        bytes32 recordKey = keccak256(abi.encodePacked(_passportID));
         TravelRecord storage record = travelRecords[recordKey];
-        require(record.entryDate != 0, "Travel record does not exist");
-        require(_exitDate == 0 || _exitDate == block.timestamp, "Invalid exit date");
-        record.actualExitDate = _exitDate;
+        require(passportExists[_passportID], "Travel record does not exist");
+        require(record.actualExitDate == 0, "Exit date already set");
+        // clears the entry date when you add exit date
+        record.entryDate = 0;
+        record.actualExitDate = block.timestamp;
     }
 
     function getTravelRecord(string memory _passportID, uint _entryDate) public view returns (string memory, uint, string memory, string memory, string memory, string memory, uint, uint, uint) {
-        bytes32 recordKey = keccak256(abi.encodePacked(_passportID, _entryDate));
+        bytes32 recordKey = keccak256(abi.encodePacked(_passportID));
         TravelRecord storage record = travelRecords[recordKey];
-        require(record.entryDate != 0, "Travel record does not exist");
+        require(passportExists[_passportID], "Travel record does not exist");
         return (
             record.passportID,
             record.passportExpirationDate,

@@ -269,7 +269,7 @@ class TravelLogGUI:
             elif datatype == int:
                 values.append(int(value))
         # Call the updateTravelRecord function from the smart contract with the values as arguments
-        tx_hash = self.contract.functions.getTravelRecord(*values).transact()
+        tx_hash = self.contract.functions.getTravelRecord(*values).transact({'from': '0x332F6a1F6691503855D59DB8A5fAc61789Bc99BD'})
         # Wait for the transaction to be mined
         self.web3.eth.waitForTransactionReceipt(tx_hash)
         # Clear the input fields
