@@ -1,0 +1,137 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_passportExpirationDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_fullName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_countryOfResidence",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_countryOfOrigin",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_destinationCountry",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_entryDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_plannedExitDate",
+				"type": "uint256"
+			}
+		],
+		"name": "addTravelRecord",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_exitDate",
+				"type": "uint256"
+			}
+		],
+		"name": "updateTravelRecord",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_entryDate",
+				"type": "uint256"
+			}
+		],
+		"name": "getTravelRecord",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
