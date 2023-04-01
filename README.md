@@ -6,7 +6,11 @@ The goal of our Application is intended for travelers to use as a validation met
 The appication will work over a streamlit application where travel ID can be selected, then origin and destination country will be selected.
 This will be beneficial and useful individuals who are travel to potentially currupt governments. 
 This would create a record of a travelers past destinations and new current destination.
+The Ethereum smart contract implements the travel log from country to another. 
 
+## Main points:
+Travelers are not allowed to enter multiple countries at once, so this will provide one entry and exit. 
+There will be initial transfer of wei to destination country
 
 
 
