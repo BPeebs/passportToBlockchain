@@ -9,8 +9,9 @@ This would create a record of a travelers past destinations and new current dest
 The Ethereum smart contract implements the travel log from country to another. 
 
 ## Main points:
-Travelers are not allowed to enter multiple countries at once, so this will provide one entry and exit. 
-There will be initial transfer of wei to destination country
+- Travelers are not allowed to enter multiple countries at once, so this will provide one entry and exit. 
+- There will be initial transfer of wei to destination country
+- Passport Expiration date must be 6 months from entry date 
 
 
 
