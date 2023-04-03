@@ -1,10 +1,5 @@
 [
 	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -48,6 +43,24 @@
 			}
 		],
 		"name": "addTravelRecord",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			}
+		],
+		"name": "updateTravelRecord",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -109,19 +122,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_passportID",
-				"type": "string"
-			}
-		],
-		"name": "updateTravelRecord",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

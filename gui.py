@@ -19,7 +19,7 @@ class TravelLogGUI:
         master.title("TravelLog GUI")
         with open(Path(r'C:\Users\ajcth\Documents\GitHub\Passport_To_Blockchain\passport_abi.json')) as f:
             self.abi = json.load(f)
-        self.contract_address = "0x8EFa01ec71854925decD2d690422F4bCBE0BC5Ef"
+        self.contract_address = "0x03743299B5f93C7cA1806BBa48AbD04a3548fc0D"
         self.network = "HTTP://127.0.0.1:7545"
         self.web3 = Web3(Web3.HTTPProvider(self.network))
         self.contract = self.web3.eth.contract(address=self.contract_address, abi=self.abi)
@@ -28,20 +28,19 @@ class TravelLogGUI:
         
         self.add_travel_record_fields = [
             ("Passport ID", str),
-            ("Passport Expiration Date (Unix timestamp)", int),
+            ("Passport Expiration Date (DD/MM/YYYY)", int),
             ("Full Name", str),
             ("Country of Residence", str),
             ("Country of Origin", str),
             ("Destination Country", str),
-            ("Entry Date (Unix timestamp)", int),
-            ("Planned Exit Date (Unix timestamp)", int)
+            ("Entry Date (DD/MM/YYYY)", int),
+            ("Planned Exit Date (DD/MM/YYYY)", int)
         ]
         self.update_travel_record_fields = [
             ("Passport ID", str),
         ]
         self.get_travel_record_fields = [
             ("Passport ID", str),
-            ("Entry Date (Unix timestamp)", int)
         ]
         self.create_widgets()
     def create_widgets(self):

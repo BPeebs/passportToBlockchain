@@ -63,7 +63,7 @@ contract TravelLog {
         record.actualExitDate = block.timestamp;
     }
 
-    function getTravelRecord(string memory _passportID, uint _entryDate) public view returns (string memory, uint, string memory, string memory, string memory, string memory, uint, uint, uint) {
+    function getTravelRecord(string memory _passportID) public view returns (string memory, uint, string memory, string memory, string memory, string memory, uint, uint, uint) {
         bytes32 recordKey = keccak256(abi.encodePacked(_passportID));
         TravelRecord storage record = travelRecords[recordKey];
         require(passportExists[_passportID], "Travel record does not exist");
