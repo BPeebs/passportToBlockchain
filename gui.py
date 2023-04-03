@@ -9,6 +9,7 @@ from dateutil import tz
 import datetime
 
 
+
 root = tk.Tk()
 
 
@@ -163,7 +164,10 @@ class TravelLogGUI:
         self.output_text.insert(tk.END, f"Country of Residence: {result[3]}\n")
         self.output_text.insert(tk.END, f"Country of Origin: {result[4]}\n")
         self.output_text.insert(tk.END, f"Destination Country: {result[5]}\n")
-        self.output_text.insert(tk.END, f"Entry Date: {datetime.datetime.utcfromtimestamp(result[6]).strftime('%Y-%m-%d %H:%M:%S')}\n")
+        if result[6] == 0:
+            self.output_text.insert(tk.END, "This individual has not arrived in a new country since leaving their last location, and is likely still in transit.\n")
+        else:
+            self.output_text.insert(tk.END, f"Entry Date: {datetime.datetime.utcfromtimestamp(result[6]).strftime('%Y-%m-%d %H:%M:%S')}\n")
         self.output_text.insert(tk.END, f"Planned Exit Date: {datetime.datetime.utcfromtimestamp(result[7]).strftime('%Y-%m-%d %H:%M:%S')}\n")
 
 travel_log_gui = TravelLogGUI(root)
