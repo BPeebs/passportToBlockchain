@@ -44,20 +44,31 @@ class TravelLogGUI:
         ]
         self.create_widgets()
     def create_widgets(self):
+
+        self.add_travel_record_frame = tk.LabelFrame(self.master, text="Add Travel Record")
+        self.add_travel_record_frame.pack()
+
+        self.update_travel_record_frame = tk.LabelFrame(self.master, text="Update Travel Record")
+        self.update_travel_record_frame.pack()
+
+        self.get_travel_record_frame = tk.LabelFrame(self.master, text="Get Travel Record")
+        self.get_travel_record_frame.pack()
+
+
         self.add_travel_record_entries = []
         for field, datatype in self.add_travel_record_fields:
-            frame = tk.Frame(self.master)
-            frame.pack(anchor = 'w')
+            frame = tk.Frame(self.add_travel_record_frame)
+            frame.pack()
             label = tk.Label(frame, text=field)
-            label.pack(anchor = 'w')
+            label.pack()
             entry = tk.Entry(frame)
-            entry.pack(anchor = 'w')
+            entry.pack()
             self.add_travel_record_entries.append((entry, datatype))
 
         # Create input fields for updateTravelRecord function
         self.update_travel_record_entries = []
         for field, datatype in self.update_travel_record_fields:
-            frame = tk.Frame(self.master)
+            frame = tk.Frame(self.update_travel_record_frame)
             frame.pack()
             label = tk.Label(frame, text=field)
             label.pack()
@@ -68,23 +79,23 @@ class TravelLogGUI:
         # Create input fields for getTravelRecord function
         self.get_travel_record_entries = []
         for field, datatype in self.get_travel_record_fields:
-            frame = tk.Frame(self.master)
-            frame.pack(anchor = 'e')
+            frame = tk.Frame(self.get_travel_record_frame)
+            frame.pack()
             label = tk.Label(frame, text=field)
-            label.pack(anchor = 'e')
+            label.pack()
             entry = tk.Entry(frame)
-            entry.pack(anchor = 'e')
+            entry.pack()
             self.get_travel_record_entries.append((entry, datatype))
 
         # Create buttons for each function
-        self.add_travel_record_button = tk.Button(self.master, text="Add Travel Record", command=self.add_travel_record)
-        self.add_travel_record_button.pack(anchor = 'w')
+        self.add_travel_record_button = tk.Button(self.add_travel_record_frame, text="Add Travel Record", command=self.add_travel_record)
+        self.add_travel_record_button.pack()
 
-        self.update_travel_record_button = tk.Button(self.master, text="Update Travel Record", command=self.update_travel_record)
+        self.update_travel_record_button = tk.Button(self.update_travel_record_frame, text="Update Travel Record", command=self.update_travel_record)
         self.update_travel_record_button.pack()
 
-        self.get_travel_record_button = tk.Button(self.master, text="Get Travel Record", command=self.get_travel_record)
-        self.get_travel_record_button.pack(anchor = 'e')
+        self.get_travel_record_button = tk.Button(self.get_travel_record_frame, text="Get Travel Record", command=self.get_travel_record)
+        self.get_travel_record_button.pack()
 
         # Create output area for getTravelRecord function
         self.output_text = tk.Text(self.master)
