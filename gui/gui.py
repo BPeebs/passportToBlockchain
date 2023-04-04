@@ -47,7 +47,7 @@ class TravelLogGUI:
     def create_widgets(self):
 
 
-        root.geometry("900x1100")
+        root.geometry("750x600")
 
         self.frame_image = tk.Frame(self.master, borderwidth=2, bg="white", relief='sunken')
         self.frame_image.pack(side='top', fill="x")
@@ -57,16 +57,16 @@ class TravelLogGUI:
         self.frame_image.label.place(x=0, y=0, relwidth=1, relheight=1)
 
         self.add_travel_record_frame = tk.LabelFrame(self.master, text="Add Travel Record", labelanchor='n')
-        self.add_travel_record_frame.pack()
+        self.add_travel_record_frame.pack(side=tk.LEFT)
 
         self.update_travel_record_frame = tk.LabelFrame(self.master, text="Update Travel Record", labelanchor='n')
-        self.update_travel_record_frame.pack()
+        self.update_travel_record_frame.pack(side=tk.LEFT)
 
         self.get_travel_record_frame = tk.LabelFrame(self.master, text="Get Travel Record", labelanchor='n')
-        self.get_travel_record_frame.pack()
+        self.get_travel_record_frame.pack(side=tk.LEFT)
 
         self.output_text_frame = tk.LabelFrame(self.master, text="Travel Record Info", labelanchor='n', width=300, height=200)
-        self.output_text_frame.pack()
+        self.output_text_frame.pack(side=tk.RIGHT)
         self.output_text_frame.pack_propagate(False)
 
         self.add_travel_record_entries = []
@@ -182,6 +182,6 @@ class TravelLogGUI:
         else:
             self.output_text.insert(tk.END, f"Entry Date: {datetime.datetime.utcfromtimestamp(result[6]).strftime('%Y-%m-%d')}\n")
         self.output_text.insert(tk.END, f"Planned Exit Date: {datetime.datetime.utcfromtimestamp(result[7]).strftime('%Y-%m-%d')}\n")
-
+        self.output_text.insert(tk.END, f"Actual Exit Date: {datetime.datetime.utcfromtimestamp(result[8]).strftime('%Y-%m-%d')}\n")
 travel_log_gui = TravelLogGUI(root)
 root.mainloop()
