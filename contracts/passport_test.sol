@@ -26,50 +26,63 @@ contract TravelLog {
         _;
     }
 
-    function addTravelRecord(
+    function addPassportID(
         string memory _passportID,
         uint _passportExpirationDate,
         string memory _fullName,
-        string memory _countryOfResidence,
-        string memory _countryOfOrigin,
-        string memory _destinationCountry,
-        uint _entryDate,
-        uint _plannedExitDate
+        string memory _countryOfResidence
     ) public onlyAdmin {
         bytes32 recordKey = keccak256(abi.encodePacked(_passportID));
-        require(!passportExists[_passportID], "Travel record already exists");
+        require(!passportExists[_passportID], "Passport record already exists");
         require(_passportExpirationDate > block.timestamp + 180 days, "Passport expiration date must be at least 6 months from entry date");
         travelRecords[recordKey] = TravelRecord(
             _passportID,
             _passportExpirationDate,
             _fullName,
             _countryOfResidence,
-            _countryOfOrigin,
-            _destinationCountry,
-            _entryDate,
-            _plannedExitDate,
+            _countryOfResidence,
+            '',
+            0,
+            0,
             0
         );
         passportExists[_passportID] = true;
     }
 
-    function addEntryDate(string memory _passportID, uint _plannedExitDate) public onlyAdmin {
+    function returnHome(string memory _passportID, string memory _countryOfOrigin, string memory _countryOfResidence) public onlyAdmin {
         bytes32 recordKey = keccak256(abi.encodePacked(_passportID));
         TravelRecord storage record = travelRecords[recordKey];
-        require(passportExists[_passportID], "Travel record does not exist");
+        require(keccak256(abi.encodePacked(record.countryOfResidence)) ==  keccak256(abi.encodePacked(_countryOfResidence)), "User is not a resident of this country. Please use the 'add entry date' form.");
+        require(passportExists[_passportID], "Passport record does not exist");
+        require(record.entryDate == 0, "User cannot input a new entry date until entering an exit date.");
+        record.entryDate = block.timestamp;
+        record.plannedExitDate = 0;
+        record.actualExitDate = 0;
+        record.countryOfOrigin = _countryOfOrigin;
+        record.destinationCountry = '';
+    }
+
+
+    function addEntryDate(string memory _passportID, uint _plannedExitDate, string memory _countryOfOrigin) public onlyAdmin {
+        bytes32 recordKey = keccak256(abi.encodePacked(_passportID));
+        TravelRecord storage record = travelRecords[recordKey];
+        require(passportExists[_passportID], "Passport record does not exist");
         require(record.entryDate == 0, "User cannot input a new entry date until entering an exit date.");
         record.entryDate = block.timestamp;
         record.plannedExitDate = _plannedExitDate;
         record.actualExitDate = 0;
+        record.countryOfOrigin = _countryOfOrigin;
+        record.destinationCountry = '';
     }
 
-    function addExitDate(string memory _passportID) public onlyAdmin {
+    function addExitDate(string memory _passportID, string memory _destinationCountry) public onlyAdmin {
         bytes32 recordKey = keccak256(abi.encodePacked(_passportID));
         TravelRecord storage record = travelRecords[recordKey];
         require(passportExists[_passportID], "Travel record does not exist");
         require(record.actualExitDate == 0, "Exit date already set");
         record.entryDate = 0;
         record.actualExitDate = block.timestamp;
+        record.destinationCountry = _destinationCountry;
     }
 
     function getTravelRecord(string memory _passportID) public view returns (string memory, uint, string memory, string memory, string memory, string memory, uint, uint, uint) {
