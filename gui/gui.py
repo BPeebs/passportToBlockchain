@@ -11,7 +11,7 @@ import tkcalendar
 
 
 root = tk.Tk()
-
+root.iconbitmap("C:\\Users\\ajcth\\Documents\\GitHub\\Passport_To_Blockchain\\resources\\images\\thumbnail.ico")
 
 # Create the GUI
 class TravelLogGUI:
