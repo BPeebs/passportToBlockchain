@@ -1,0 +1,158 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_plannedExitDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_countryOfOrigin",
+				"type": "string"
+			}
+		],
+		"name": "addEntryDate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_destinationCountry",
+				"type": "string"
+			}
+		],
+		"name": "addExitDate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_passportExpirationDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_fullName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_countryOfResidence",
+				"type": "string"
+			}
+		],
+		"name": "addPassportID",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_countryOfOrigin",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_countryOfResidence",
+				"type": "string"
+			}
+		],
+		"name": "returnHome",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_passportID",
+				"type": "string"
+			}
+		],
+		"name": "getTravelRecord",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
