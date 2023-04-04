@@ -7,7 +7,7 @@ from web3 import Web3
 from dateutil.parser import parse
 from dateutil import tz
 import datetime
-
+import tkcalendar
 
 
 root = tk.Tk()
@@ -71,14 +71,22 @@ class TravelLogGUI:
 
         self.add_travel_record_entries = []
         for field, datatype in self.add_travel_record_fields:
-            frame = tk.Frame(self.add_travel_record_frame)
-            frame.pack()
-            label = tk.Label(frame, text=field)
-            label.pack()
-            entry = tk.Entry(frame)
-            entry.pack()
-            self.add_travel_record_entries.append((entry, datatype))
-
+            if datatype == str:
+                frame = tk.Frame(self.add_travel_record_frame)
+                frame.pack()
+                label = tk.Label(frame, text=field)
+                label.pack()
+                entry = tk.Entry(frame)
+                entry.pack()
+                self.add_travel_record_entries.append((entry, datatype))
+            else:
+                frame = tk.Frame(self.add_travel_record_frame)
+                frame.pack()
+                label = tk.Label(frame, text=field)
+                label.pack()
+                entry = tkcalendar.DateEntry(frame)
+                entry.pack()
+                self.add_travel_record_entries.append((entry, datatype))
         # Create input fields for updateTravelRecord function
         self.update_travel_record_entries = []
         for field, datatype in self.update_travel_record_fields:
@@ -182,6 +190,9 @@ class TravelLogGUI:
         else:
             self.output_text.insert(tk.END, f"Entry Date: {datetime.datetime.utcfromtimestamp(result[6]).strftime('%Y-%m-%d')}\n")
         self.output_text.insert(tk.END, f"Planned Exit Date: {datetime.datetime.utcfromtimestamp(result[7]).strftime('%Y-%m-%d')}\n")
-        self.output_text.insert(tk.END, f"Actual Exit Date: {datetime.datetime.utcfromtimestamp(result[8]).strftime('%Y-%m-%d')}\n")
+        if result[8] == 0:
+            self.output_text.insert(tk.END, "This individual has not left the country yet.\n")
+        else:
+            self.output_text.insert(tk.END, f"Actual Exit Date: {datetime.datetime.utcfromtimestamp(result[8]).strftime('%Y-%m-%d')}\n")
 travel_log_gui = TravelLogGUI(root)
 root.mainloop()
