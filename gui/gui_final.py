@@ -258,15 +258,21 @@ class TravelLogGUI:
                 dt = parse(value)
                 dt = dt.astimezone(tz.UTC)
                 values.append(int(dt.timestamp()))
-        # Call the updateTravelRecord function from the smart contract with the values as arguments
-        self.deployer_address = os.getenv("DEPLOYER_ADDRESS")
-        tx_hash = self.contract.functions.returnHome(*values).transact({'from': self.deployer_address})
-        # Wait for the transaction to be mined
-        self.web3.eth.waitForTransactionReceipt(tx_hash)
-        # Clear the input fields
-        for entry in self.return_home_entries:
-            entry[0].delete(0, tk.END)
 
+        try:        
+            # Call the updateTravelRecord function from the smart contract with the values as arguments
+            self.deployer_address = os.getenv("DEPLOYER_ADDRESS")
+            tx_hash = self.contract.functions.returnHome(*values).transact({'from': self.deployer_address})
+            # Wait for the transaction to be mined
+            self.web3.eth.waitForTransactionReceipt(tx_hash)
+            # Clear the input fields
+            for entry in self.return_home_entries:
+                entry[0].delete(0, tk.END)
+        except ValueError as e:
+            # Catch the ValueError exception and display the error message
+            error_message = f"Error: Country of Residence must match users records.\n {str(e)}"
+            self.output_text.delete(1.0, tk.END)
+            self.output_text.insert(tk.END, error_message)
     def get_travel_record(self):
         # Get the values from the input fields
         values = []
