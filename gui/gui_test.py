@@ -8,7 +8,8 @@ from dateutil.parser import parse
 from dateutil import tz
 import datetime
 import tkcalendar
-
+import os
+from dotenv import load_dotenv
 
 root = tk.Tk()
 root.iconbitmap("C:\\Users\\ajcth\\Documents\\GitHub\\Passport_To_Blockchain\\resources\\images\\thumbnail.ico")
@@ -20,8 +21,10 @@ class TravelLogGUI:
         master.title("Travel Log")
         with open(Path(r'C:\Users\ajcth\Documents\GitHub\Passport_To_Blockchain\resources\abi\passport_test_abi.json')) as f:
             self.abi = json.load(f)
-        self.contract_address = "0xb9DFaf5BCE154C28a200F032abAb35C1a95f8b23"
-        self.network = "HTTP://127.0.0.1:7545"
+        self.dotenv_path = Path('C:\\Users\\ajcth\\Documents\\GitHub\\Passport_To_Blockchain\\resources\\env\\.env')
+        load_dotenv(dotenv_path=self.dotenv_path)
+        self.contract_address = os.getenv("SMART_CONTRACT_ADDRESS")
+        self.network = os.getenv("WEB3_PROVIDER_URI")
         self.web3 = Web3(Web3.HTTPProvider(self.network))
         self.contract = self.web3.eth.contract(address=self.contract_address, abi=self.abi)
         
@@ -66,10 +69,10 @@ class TravelLogGUI:
         self.add_passport_id_frame.place(x=100, y=100)
 
         self.add_entry_date_frame = tk.LabelFrame(self.master, text="Add Entry Date", labelanchor='n')
-        self.add_entry_date_frame.place(x=300, y=100)
+        self.add_entry_date_frame.place(x=600, y=100)
 
         self.add_exit_date_frame = tk.LabelFrame(self.master, text="Add Exit Date", labelanchor='n')
-        self.add_exit_date_frame.place(x=600, y=100)
+        self.add_exit_date_frame.place(x=300, y=100)
 
         self.return_home_frame = tk.LabelFrame(self.master, text="Return Home", labelanchor='n')
         self.return_home_frame.place(x=450, y=100)
@@ -189,7 +192,8 @@ class TravelLogGUI:
                 values.append(int(dt.timestamp()))
 
         # Call the addTravelRecord function from the smart contract with the values as arguments
-        tx_hash = self.contract.functions.addPassportID(*values).transact({'from': '0x332F6a1F6691503855D59DB8A5fAc61789Bc99BD'})
+        self.deployer_address = os.getenv("DEPLOYER_ADDRESS")
+        tx_hash = self.contract.functions.addPassportID(*values).transact({'from':  self.deployer_address})
 
         # Wait for the transaction to be mined
         self.web3.eth.waitForTransactionReceipt(tx_hash)
@@ -206,9 +210,13 @@ class TravelLogGUI:
             if datatype == str:
                 values.append(value)
             elif datatype == int:
-                values.append(int(value))
+                # Convert date string to datetime object and then to Unix timestamp
+                dt = parse(value)
+                dt = dt.astimezone(tz.UTC)
+                values.append(int(dt.timestamp()))
         # Call the updateTravelRecord function from the smart contract with the values as arguments
-        tx_hash = self.contract.functions.addEntryDate(*values).transact({'from': '0x332F6a1F6691503855D59DB8A5fAc61789Bc99BD'})
+        self.deployer_address = os.getenv("DEPLOYER_ADDRESS")
+        tx_hash = self.contract.functions.addEntryDate(*values).transact({'from': self.deployer_address})
         # Wait for the transaction to be mined
         self.web3.eth.waitForTransactionReceipt(tx_hash)
         # Clear the input fields
@@ -223,9 +231,13 @@ class TravelLogGUI:
             if datatype == str:
                 values.append(value)
             elif datatype == int:
-                values.append(int(value))
+                # Convert date string to datetime object and then to Unix timestamp
+                dt = parse(value)
+                dt = dt.astimezone(tz.UTC)
+                values.append(int(dt.timestamp()))
         # Call the updateTravelRecord function from the smart contract with the values as arguments
-        tx_hash = self.contract.functions.addExitDate(*values).transact({'from': '0x332F6a1F6691503855D59DB8A5fAc61789Bc99BD'})
+        self.deployer_address = os.getenv("DEPLOYER_ADDRESS")
+        tx_hash = self.contract.functions.addExitDate(*values).transact({'from': self.deployer_address})
         # Wait for the transaction to be mined
         self.web3.eth.waitForTransactionReceipt(tx_hash)
         # Clear the input fields
@@ -240,9 +252,13 @@ class TravelLogGUI:
             if datatype == str:
                 values.append(value)
             elif datatype == int:
-                values.append(int(value))
+                # Convert date string to datetime object and then to Unix timestamp
+                dt = parse(value)
+                dt = dt.astimezone(tz.UTC)
+                values.append(int(dt.timestamp()))
         # Call the updateTravelRecord function from the smart contract with the values as arguments
-        tx_hash = self.contract.functions.returnHome(*values).transact({'from': '0x332F6a1F6691503855D59DB8A5fAc61789Bc99BD'})
+        self.deployer_address = os.getenv("DEPLOYER_ADDRESS")
+        tx_hash = self.contract.functions.returnHome(*values).transact({'from': self.deployer_address})
         # Wait for the transaction to be mined
         self.web3.eth.waitForTransactionReceipt(tx_hash)
         # Clear the input fields
