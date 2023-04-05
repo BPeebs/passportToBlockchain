@@ -21,8 +21,8 @@ The contract checks the users passport expiration and will not allow them to cre
 # Technologies 
 - Remix https://remix.ethereum.org/
 - Solidity: https://github.com/ethereum/solidity
-- Streamlit: https://streamlit.io/gallery  'pip install streamlit' 
 - Web3 : https://web3py.readthedocs.io/en/stable/overview.html 'pip install web3==5.17'
+- Tkinter - https://docs.python.org/3/library/tkinter.html 
 
 
 
