@@ -19,7 +19,7 @@ class TravelLogGUI:
     def __init__(self, master):
         self.master = master
         master.title("Travel Log")
-        with open(Path(r'C:\Users\ajcth\Documents\GitHub\Passport_To_Blockchain\resources\abi\passport_test_abi.json')) as f:
+        with open(Path(r'C:\Users\ajcth\Documents\GitHub\Passport_To_Blockchain\resources\abi\passport_final_abi.json')) as f:
             self.abi = json.load(f)
         self.dotenv_path = Path('C:\\Users\\ajcth\\Documents\\GitHub\\Passport_To_Blockchain\\resources\\env\\.env')
         load_dotenv(dotenv_path=self.dotenv_path)
