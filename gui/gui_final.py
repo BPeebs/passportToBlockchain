@@ -196,18 +196,22 @@ class TravelLogGUI:
                 dt = parse(value)
                 dt = dt.astimezone(tz.UTC)
                 values.append(int(dt.timestamp()))
+        try:
+            # Call the addTravelRecord function from the smart contract with the values as arguments
+            self.deployer_address = os.getenv("DEPLOYER_ADDRESS")
+            tx_hash = self.contract.functions.addPassportID(*values).transact({'from':  self.deployer_address})
 
-        # Call the addTravelRecord function from the smart contract with the values as arguments
-        self.deployer_address = os.getenv("DEPLOYER_ADDRESS")
-        tx_hash = self.contract.functions.addPassportID(*values).transact({'from':  self.deployer_address})
+            # Wait for the transaction to be mined
+            self.web3.eth.waitForTransactionReceipt(tx_hash)
 
-        # Wait for the transaction to be mined
-        self.web3.eth.waitForTransactionReceipt(tx_hash)
-
-        # Clear the input fields
-        for entry in self.add_passport_id_entries:
-            entry[0].delete(0, tk.END)
-
+            # Clear the input fields
+            for entry in self.add_passport_id_entries:
+                entry[0].delete(0, tk.END)
+        except ValueError as e:
+            # Catch the ValueError exception and display the error message
+            error_message = f"Error: Passport must be at least 6 months from expiration date.\n {str(e)}"
+            self.output_text.delete(1.0, tk.END)
+            self.output_text.insert(tk.END, error_message)
     def add_entry_date(self):
         # Get the values from the input fields
         values = []
