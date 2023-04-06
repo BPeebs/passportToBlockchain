@@ -47,7 +47,7 @@ The user cannot create multiple accounts, and cannot 'return home' to a country 
 The contract checks the users passport expiration and will not allow them to create an ID if its within 6 months. 
 
 
-## Steps to Deployment of Application:
+## Steps to Deploy the Application:
 
 1. Open Ganache and create a quick start session
 
