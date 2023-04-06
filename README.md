@@ -47,14 +47,18 @@ The user cannot create multiple accounts, and cannot 'return home' to a country 
 The contract checks the users passport expiration and will not allow them to create an ID if its within 6 months. 
 
 
-## Deployment of Application:
+## Steps to Deployment of Application:
 
-The contract can be deployed to the Ethereum network using Remix and should be compiled using Solidity version 0.8.0 or higher.
+1. Open Ganache and create a quick start session
 
-Copy the contract address into the .env file
+2. Connect MetaMask to the Remix environment with one of your accounts with available Eth funds from your testnet
 
-Then run the gui.py Python application to open up the GUI
-Once open, the user will see a GUI window with several input fields and buttons.
+3. Compiled the passport.sol contract using Solidity version 0.8.0 or higher
+
+4. Copy the smart contract address and deployer address into the .env file, save it
+
+5. Then run the gui.py Python application to open up the GUI
+
 
 ## Usage of the Application:
 
