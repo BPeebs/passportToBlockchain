@@ -62,6 +62,10 @@ The contract checks the users passport expiration and will not allow them to cre
 
 ## Usage of the Application:
 
+
+![](2023-04-05-18-16-20.png)
+
+
 Here is a description of how to interact with each field and button:
 
 ### Add Passport ID Record:
