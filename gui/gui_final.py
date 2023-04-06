@@ -303,7 +303,10 @@ class TravelLogGUI:
             self.output_text.insert(tk.END, f"Passport Expiration: {datetime.datetime.utcfromtimestamp(result[1]).strftime('%Y-%m-%d')}\n")
             self.output_text.insert(tk.END, f"Full Name: {result[2]}\n")
             self.output_text.insert(tk.END, f"Country of Residence: {result[3]}\n")
-            self.output_text.insert(tk.END, f"Country of Origin: {result[4]}\n")
+            if result[4] == '':
+                self.output_text.insert(tk.END, "Country of Origin: This individual departed from their country of residence.\n")
+            else:
+                self.output_text.insert(tk.END, f"Country of Origin: {result[4]}\n")
             self.output_text.insert(tk.END, f"Destination Country: {result[5]}\n")
             if result[6] == 0:
                 self.output_text.insert(tk.END, "Entry Date: This individual may still be in transit, or has created a passport ID record but has not since left their country of residence.\n")

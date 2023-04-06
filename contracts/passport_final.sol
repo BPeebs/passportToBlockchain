@@ -72,7 +72,6 @@ contract TravelLog {
         record.plannedExitDate = _plannedExitDate;
         record.actualExitDate = 0;
         record.countryOfOrigin = _countryOfOrigin;
-        record.destinationCountry = '';
     }
 
     function addExitDate(string memory _passportID, string memory _destinationCountry) public onlyAdmin {
@@ -82,6 +81,7 @@ contract TravelLog {
         require(record.actualExitDate == 0, "Exit date already set");
         record.entryDate = 0;
         record.actualExitDate = block.timestamp;
+        record.countryOfOrigin = record.destinationCountry;
         record.destinationCountry = _destinationCountry;
     }
 
