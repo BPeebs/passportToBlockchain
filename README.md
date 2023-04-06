@@ -24,31 +24,15 @@ This is then used to record any exit/entry/return actions for that user.
 The contract consists of a TravelRecord struct that stores the following information:
 
 Passport ID
-
 Passport expiration date
-
 Full name
-
 Country of residence
-
 Country of origin
-
 Destination country
-
 Entry date
-
 Planned exit date
-
 Actual exit date
 
-
-addPassportID: This function creates a new passport record with the given details.
-returnHome: This function adds an entry date for a passport, assuming the user is returning to their country of residence.
-
-addEntryDate: This function adds an entry date and planned exit date for a passport.
-
-addExitDate: This function adds an exit date and destination country for a passport.
-getTravelRecord: This function retrieves the travel record for a given passport ID.
 
 Note that the addPassportID function can only be called by the contract admin.
 The other functions can also only be called by the contract admin, to ensure the security and accuracy of the data.
@@ -80,13 +64,13 @@ Here is a description of how to interact with each field and button:
 This section contains input fields for creating a new passport ID record in the TravelRecords folder of the smart contract.
 Here the user will need to enter the passport ID number, expiration date, full name, and country of residence.
 The expiration date should be entered in the format DD/MM/YYYY.
-Once the user have entered all the required information, click the "Add Passport ID" button to create the record on the blockchain.
+Once the user has entered all the required information, click the "Add Passport ID" button to create the record on the blockchain.
 
 ### Add Entry Date:
 This section contains input fields for adding an entry date to a passport ID.
 Here the user will need to enter the passport ID number, planned exit date, and country of origin.
 The planned exit date should be entered in the format DD/MM/YYYY.
-Once the user have entered all the required information, click the "Add Entry Date" button to update the record on the blockchain.
+Once the user has entered all the required information, click the "Add Entry Date" button to update the record on the blockchain.
 
 ### Add Exit Date:
 This section contains input fields for adding an exit date to a passport ID.
@@ -106,7 +90,7 @@ Once the user has entered the passport ID number, click the "Get Travel Record" 
 Travel Record Info: This section displays the results of your interactions with the blockchain.
 If the user creates, updates, or views a travel record, the results will be displayed here.
 
-
+Note that all the functions can only be called by the contract admin to ensure the security and accuracy of the data.
 
 
 ## License:
