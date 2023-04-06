@@ -12,7 +12,9 @@ import os
 from dotenv import load_dotenv
 
 root = tk.Tk()
-root.iconbitmap("C:\\Users\\ajcth\\Documents\\GitHub\\Passport_To_Blockchain\\resources\\images\\thumbnail.ico")
+dir = Path(os.path.dirname(os.path.abspath(__file__)))
+ico_path = dir / '..' / 'resources' / 'images' / 'thumbnail.ico'
+root.iconbitmap(ico_path)
 
 # Create the GUI
 class TravelLogGUI:
@@ -63,7 +65,9 @@ class TravelLogGUI:
         self.frame_image = tk.Frame(self.master, borderwidth=2, bg="white", relief='sunken')
         self.frame_image.pack(side='top', fill="x")
 
-        self.frame_image.picture = tk.PhotoImage(name="background_photo", file="C:\\Users\\ajcth\\Documents\\GitHub\\Passport_To_Blockchain\\resources\\images\\background_photo.gif")
+        
+        self.thumbnail_path = self.dir / '..' / 'resources' / 'images' / 'background_photo.gif'
+        self.frame_image.picture = tk.PhotoImage(name="background_photo", file=self.thumbnail_path)
         self.frame_image.label = tk.Label(self.master, image=self.frame_image.picture)
         self.frame_image.label.place(x=0, y=0, relwidth=1, relheight=1)
 
