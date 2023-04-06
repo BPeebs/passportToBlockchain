@@ -11,10 +11,12 @@ This is then used to record any exit/entry/return actions for that user.
 
 ## Technologies:
 
-- Remix : https://remix.ethereum.org/
-- Solidity: https://github.com/ethereum/solidity
-- Web3 : https://web3py.readthedocs.io/en/stable/overview.html 'pip install web3==5.17'
-- Tkinter : https://docs.python.org/3/library/tkinter.html 
+- remix : https://remix.ethereum.org/
+- solidity: https://github.com/ethereum/solidity
+- web3 : https://web3py.readthedocs.io/en/stable/overview.html
+- tkinter : https://docs.python.org/3/library/tkinter.html 
+- tkcalendar : https://pypi.org/project/tkcalendar/
+- dateutil : https://pypi.org/project/python-dateutil/
 
 
 ## Contract Details:
@@ -22,14 +24,23 @@ This is then used to record any exit/entry/return actions for that user.
 The contract consists of a TravelRecord struct that stores the following information:
 
 Passport ID
+
 Passport expiration date
+
 Full name
+
 Country of residence
+
 Country of origin
+
 Destination country
+
 Entry date
+
 Planned exit date
+
 Actual exit date
+
 
 addPassportID: This function creates a new passport record with the given details.
 returnHome: This function adds an entry date for a passport, assuming the user is returning to their country of residence.
