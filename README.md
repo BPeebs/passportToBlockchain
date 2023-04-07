@@ -61,7 +61,9 @@ The contract checks the users passport expiration and will not allow them to cre
 
 
 ## Usage of the Application:
-
+1. A passport ID record must first be created.
+2. Every instance of travel must be recorded from then on; both leaving and entering the country.
+3. The returnHome function acts the same as addEntryDate, but should be used when returning to your country of residence.
 
 ![](2023-04-05-18-16-20.png)
 
